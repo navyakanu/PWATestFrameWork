@@ -23,6 +23,7 @@ dependencies {
     compile group: 'info.cukes', name: 'cucumber-jvm-deps', version: '1.0.5'
     compile group: 'org.testng', name: 'testng', version: '6.9.8'
     compile group: 'net.masterthought', name: 'cucumber-reporting', version: '3.8.0'
+    compile group: 'io.appium', name: 'java-client', version: '2.2.0'
 
 }
 
@@ -33,28 +34,10 @@ task runChromeTestsUsingTestNG(type: Test) {
     outputs.upToDateWhen { false }
 }
 
-task count(type: Test) {
-    systemProperty("browser", "chrome")
-    doLast {
-       System.out.println(System.getProperty("browser"))
-    }
-}
 
-task testgradle(type: Test)  {
-    useTestNG()
-        // runlist to executed. path is relative to current folder
-        include 'src/test/java/tests/RunnerClass.class'
-        System.out.println("Running");
-
-    beforeTest { descriptor ->
-        logger.lifecycle("Running test: " + descriptor)
-    }
-    onOutput { descriptor, event ->
-        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
-    }
-}
 
 task runTests(type: JavaExec, dependsOn: 'classes') {
+    systemProperty("browser", "chrome")
     main = 'org.testng.TestNG'
     classpath = files("src/test/java/tests/RunnerClass.class",
             project.sourceSets.main.compileClasspath,

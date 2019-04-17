@@ -4,6 +4,7 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import org.openqa.selenium.WebDriver;
 
 import java.security.PublicKey;
 
@@ -14,11 +15,6 @@ public class MediumSearch {
     public void openApp() {
         System.out.println("Given***********");
 
-    }
-
-    @Before
-    public void navigateToURLBeforeScenario(){
-        System.out.println("Before scenario");
     }
 
 
