@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+}
+
+group 'com.pwa.framework'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+dependencies {
+    testCompile group: 'org.testng', name: 'testng', version: '6.10'
+    compile group: 'info.cukes', name: 'cucumber-testng', version: '1.2.5'
+    testCompile 'io.cucumber:cucumber-java:4.2.6'
+    testCompile("io.github.bonigarcia:webdrivermanager:3.4.0")
+    compile group: 'org.seleniumhq.selenium', name: 'selenium-server', version: '3.13.0'
+    compile group: 'info.cukes', name: 'cucumber-java', version: '1.2.5'
+    compile group: 'info.cukes', name: 'cucumber-testng', version: '1.2.5'
+    compile group: 'info.cukes', name: 'cucumber-jvm-deps', version: '1.0.5'
+    compile group: 'org.testng', name: 'testng', version: '6.9.8'
+    compile group: 'net.masterthought', name: 'cucumber-reporting', version: '3.8.0'
+
+}
+
+task runChromeTestsUsingTestNG(type: Test) {
+    systemProperty("browser", "chrome")
+
+    include '/Users/navyab/Repos/com.pwa.framework/src/test/java/tests/RunnerClass.java'
+    outputs.upToDateWhen { false }
+}
+
+task count(type: Test) {
+    systemProperty("browser", "chrome")
+    doLast {
+       System.out.println(System.getProperty("browser"))
+    }
+}
+
+task testgradle(type: Test)  {
+    useTestNG()
+        // runlist to executed. path is relative to current folder
+        include 'src/test/java/tests/RunnerClass.class'
+        System.out.println("Running");
+
+    beforeTest { descriptor ->
+        logger.lifecycle("Running test: " + descriptor)
+    }
+    onOutput { descriptor, event ->
+        logger.lifecycle("Test: " + descriptor + " produced standard out/err: " + event.message )
+    }
+}
+
+task runTests(type: JavaExec, dependsOn: 'classes') {
+    main = 'org.testng.TestNG'
+    classpath = files("src/test/java/tests/RunnerClass.class",
+            project.sourceSets.main.compileClasspath,
+            project.sourceSets.test.compileClasspath,
+            project.sourceSets.main.runtimeClasspath,
+            project.sourceSets.test.runtimeClasspath)
+    args = ["-parallel",  "methods", "-threadcount", "1", "-d", "./build/test-output", "./src/test/java/tests/testing.xml"]
+}
+
