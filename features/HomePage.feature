@@ -12,12 +12,12 @@ Background:
   Scenario: Medium search scenario
 
     Given the medium site is up
-    When the search button is clicked and the text is types
+    When the onezero button is clicked
     Then the results are displayed
 
 
   Scenario: Medium search scenario 2
 
     Given the medium site is up
-    When the search button is clicked and the text is types
+    When the onezero button is clicked
     Then the results are displayed

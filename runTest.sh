@@ -1,0 +1,3 @@
+gradle runTestsForChrome
+gradle runTestsForAndroidChrome
+gradle runTestsForIOSSafari

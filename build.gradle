@@ -7,9 +7,12 @@ version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
+
+
 repositories {
     mavenCentral()
     jcenter()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -23,9 +26,9 @@ dependencies {
     compile group: 'info.cukes', name: 'cucumber-jvm-deps', version: '1.0.5'
     compile group: 'org.testng', name: 'testng', version: '6.9.8'
     compile group: 'net.masterthought', name: 'cucumber-reporting', version: '3.8.0'
-    compile group: 'io.appium', name: 'java-client', version: '2.2.0'
-
+    implementation 'com.github.appium:java-client:5a17759b05d6fda8ef425b3ab6e766c73ed2e8df'
 }
+
 
 task runChromeTestsUsingTestNG(type: Test) {
     systemProperty("browser", "chrome")
@@ -36,7 +39,7 @@ task runChromeTestsUsingTestNG(type: Test) {
 
 
 
-task runTests(type: JavaExec, dependsOn: 'classes') {
+task runTestsForChrome(type: JavaExec, dependsOn: 'classes') {
     systemProperty("browser", "chrome")
     main = 'org.testng.TestNG'
     classpath = files("src/test/java/tests/RunnerClass.class",
@@ -47,3 +50,29 @@ task runTests(type: JavaExec, dependsOn: 'classes') {
     args = ["-parallel",  "methods", "-threadcount", "1", "-d", "./build/test-output", "./src/test/java/tests/testing.xml"]
 }
 
+
+task runTestsForAndroidChrome(type: JavaExec, dependsOn: 'classes') {
+    systemProperty("browser", "android_chrome")
+    systemProperty("device","Pixel_XL_API_28");
+    main = 'org.testng.TestNG'
+    classpath = files("src/test/java/tests/RunnerClass.class",
+            project.sourceSets.main.compileClasspath,
+            project.sourceSets.test.compileClasspath,
+            project.sourceSets.main.runtimeClasspath,
+            project.sourceSets.test.runtimeClasspath)
+    args = ["-parallel",  "methods", "-threadcount", "1", "-d", "./build/test-output", "./src/test/java/tests/testing.xml"]
+}
+
+
+task runTestsForIOSSafari(type: JavaExec, dependsOn: 'classes') {
+    systemProperty("browser", "ios_safari")
+    systemProperty("device", "iPhone")
+    systemProperty("udid","89E5EAC5-69BB-459E-AC7A-2754AE8BEEE1")
+    main = 'org.testng.TestNG'
+    classpath = files("src/test/java/tests/RunnerClass.class",
+            project.sourceSets.main.compileClasspath,
+            project.sourceSets.test.compileClasspath,
+            project.sourceSets.main.runtimeClasspath,
+            project.sourceSets.test.runtimeClasspath)
+    args = ["-parallel",  "methods", "-threadcount", "1", "-d", "./build/test-output", "./src/test/java/tests/testing.xml"]
+}
