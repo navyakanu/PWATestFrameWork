@@ -10,9 +10,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import io.appium.java_client.android.AndroidDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 public class Hooks {
@@ -35,11 +37,22 @@ public class Hooks {
         switch (browser) {
 
             case "chrome":
-                WebDriverManager.chromedriver().setup();
-                driver = new ChromeDriver();
+//                WebDriverManager.chromedriver().setup();
+//                driver = new ChromeDriver();
                 Integer viewPortHeight = Integer.parseInt(System.getProperty("viewportHeight"));
                 Integer viewPortWidth = Integer.parseInt(System.getProperty("viewportWidth"));
                 Dimension d = new Dimension(viewPortWidth,viewPortHeight);
+                capabilities.setBrowserName("chrome");
+                capabilities.setVersion("73.0");
+                capabilities.setCapability("enableVNC", true);
+                capabilities.setCapability("enableVideo", true);
+
+                 driver = new RemoteWebDriver(
+                        URI.create("http://localhost:4444/wd/hub").toURL(),
+                        capabilities
+                );
+
+
                 driver.manage().window().setSize(d);
                 break;
             case "android_chrome":
