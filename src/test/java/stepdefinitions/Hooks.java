@@ -4,6 +4,7 @@ import cucumber.api.java.After;
 import cucumber.api.java.Before;
 import io.appium.java_client.ios.IOSDriver;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
@@ -25,6 +26,8 @@ public class Hooks {
         String browser = System.getProperty("browser");
         String device = System.getProperty("device");
         String osVersion = System.getProperty("osVersion");
+
+
         String udid = System.getProperty("udid");
 
         DesiredCapabilities capabilities = new DesiredCapabilities();
@@ -34,6 +37,10 @@ public class Hooks {
             case "chrome":
                 WebDriverManager.chromedriver().setup();
                 driver = new ChromeDriver();
+                Integer viewPortHeight = Integer.parseInt(System.getProperty("viewportHeight"));
+                Integer viewPortWidth = Integer.parseInt(System.getProperty("viewportWidth"));
+                Dimension d = new Dimension(viewPortWidth,viewPortHeight);
+                driver.manage().window().setSize(d);
                 break;
             case "android_chrome":
                 capabilities.setCapability("deviceName", device);
@@ -63,6 +70,7 @@ public class Hooks {
     @After
     public void AfterScenario(){
         if (driver != null){
+            driver.manage().deleteAllCookies();
             driver.quit();
         }
     }

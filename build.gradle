@@ -29,18 +29,10 @@ dependencies {
     implementation 'com.github.appium:java-client:5a17759b05d6fda8ef425b3ab6e766c73ed2e8df'
 }
 
-
-task runChromeTestsUsingTestNG(type: Test) {
-    systemProperty("browser", "chrome")
-
-    include '/Users/navyab/Repos/com.pwa.framework/src/test/java/tests/RunnerClass.java'
-    outputs.upToDateWhen { false }
-}
-
-
-
 task runTestsForChrome(type: JavaExec, dependsOn: 'classes') {
     systemProperty("browser", "chrome")
+    systemProperty("viewportHeight",viewPortHeightProp)
+    systemProperty("viewportWidth",viewPortWidthProp)
     main = 'org.testng.TestNG'
     classpath = files("src/test/java/tests/RunnerClass.class",
             project.sourceSets.main.compileClasspath,
@@ -76,3 +68,4 @@ task runTestsForIOSSafari(type: JavaExec, dependsOn: 'classes') {
             project.sourceSets.test.runtimeClasspath)
     args = ["-parallel",  "methods", "-threadcount", "1", "-d", "./build/test-output", "./src/test/java/tests/testing.xml"]
 }
+
