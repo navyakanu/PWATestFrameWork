@@ -27,12 +27,15 @@ dependencies {
     compile group: 'org.testng', name: 'testng', version: '6.9.8'
     compile group: 'net.masterthought', name: 'cucumber-reporting', version: '3.8.0'
     implementation 'com.github.appium:java-client:5a17759b05d6fda8ef425b3ab6e766c73ed2e8df'
+    testCompile 'io.github.prashant-ramcharan:courgette-jvm:3.1.0'
+    testCompile 'io.github.prashant-ramcharan:webdriver-binary-downloader:1.2.2'
 }
 
 task runTestsForChrome(type: JavaExec, dependsOn: 'classes') {
     systemProperty("browser", "chrome")
     systemProperty("viewportHeight",viewPortHeightProp)
     systemProperty("viewportWidth",viewPortWidthProp)
+    systemProperty("platform",platform)
     main = 'org.testng.TestNG'
     classpath = files("src/test/java/tests/RunnerClass.class",
             project.sourceSets.main.compileClasspath,
@@ -46,6 +49,7 @@ task runTestsForChrome(type: JavaExec, dependsOn: 'classes') {
 task runTestsForAndroidChrome(type: JavaExec, dependsOn: 'classes') {
     systemProperty("browser", "android_chrome")
     systemProperty("device","Pixel_XL_API_28");
+    systemProperty("platform",platform)
     main = 'org.testng.TestNG'
     classpath = files("src/test/java/tests/RunnerClass.class",
             project.sourceSets.main.compileClasspath,
@@ -58,6 +62,7 @@ task runTestsForAndroidChrome(type: JavaExec, dependsOn: 'classes') {
 
 task runTestsForIOSSafari(type: JavaExec, dependsOn: 'classes') {
     systemProperty("browser", "ios_safari")
+    systemProperty("platform",platform)
     systemProperty("device", "iPhone")
     systemProperty("udid","89E5EAC5-69BB-459E-AC7A-2754AE8BEEE1")
     main = 'org.testng.TestNG'
